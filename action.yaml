@@ -1,0 +1,24 @@
+name: Render JSON template
+description: Renders JSON from a base file, injecting field/value pairs into the body
+
+inputs:
+  json-file-path:
+    description: Path to JSON file to use as base for rendering
+    required: true
+  field-value-pairs:
+    description: |
+      Multiline path/value pairs for injecting values into the supplied JSON file according to the JSON paths specified.
+      Each path/value entry should be separated by a newline, and a colon is used as the separator between a path and
+      its corresponding value.
+    required: true
+
+outputs:
+  rendered-json-file:
+    description: JSON file rendered from provided inputs
+
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.json-file-path }}
+    - ${{ inputs.field-value-pairs }}
