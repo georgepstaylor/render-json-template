@@ -27,7 +27,7 @@ need to test locally:
              json-file-path: test.json
              field-value-pairs: |
                $.some: things
-               $.items: hello
+               $.items: [8, 9, 10]
    ```
 2. Create a test file, for example `test.json`:
 

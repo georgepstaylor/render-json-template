@@ -1,5 +1,7 @@
+import ast
 import json
 import logging
+from distutils.util import strtobool
 from json import JSONDecodeError
 
 import click
@@ -24,7 +26,7 @@ def render(json_file_path: str, field_value_pairs: str):
     try:
         with open(json_file_path) as f:
             rendered_json = json.load(f)
-        for path, value in _parse_key_value_blob(field_value_pairs).items():
+        for path, value in _get_parsed_key_value_pairs(field_value_pairs).items():
             rendered_json = inject_value(rendered_json, path, value)
     except (FileNotFoundError, JSONDecodeError, JSONPathParserError, JSONTemplateRenderError) as ex:
         logger.error(f"{ex.__class__.__name__} occurred: {ex}")
@@ -33,24 +35,42 @@ def render(json_file_path: str, field_value_pairs: str):
     print(rendered_json)
 
 
-def inject_value(json_dict: dict, json_path: str, value: any) -> dict:
+def inject_value(json_dict: dict, json_path: str, raw_value: any) -> dict:
     """
     Injects a value into the given JSON at the JSON path specified
 
     :param json_dict: Dict representing the JSON to be altered according to the given path and value
     :param json_path: JSON path where value should be injected.
-    :param value: Value to be injected
+    :param raw_value: Raw value to be parsed and injected
     :return: Dict resulting from value being injected
 
     :raises: ValueError if the JSON path is invalid or the value cannot be serialized
     """
+
     try:
-        return parse_json_path(json_path).update(json_dict, value)
+        return parse_json_path(json_path).update(json_dict, _get_field_value(raw_value))
     except (JsonPathLexerError, JsonPathParserError) as ex:
         raise JSONPathParserError(str(ex))
 
 
-def _parse_key_value_blob(blob: str) -> dict:
+def _get_field_value(raw_value: str) -> any:
+    # Parse the provided value
+    try:
+        return ast.literal_eval(raw_value)
+    except ValueError:
+        pass
+
+    # Value is boolean or string; check for a boolean
+    try:
+        return bool(strtobool(raw_value))
+    except ValueError:
+        pass
+
+    # Value must be a string
+    return raw_value
+
+
+def _get_parsed_key_value_pairs(blob: str) -> dict:
     key_value_dict = {}
     non_empty_lines = [line for line in blob.split("\n") if line]
     for line in non_empty_lines:
