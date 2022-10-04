@@ -1,6 +1,7 @@
 import ast
 import json
 import logging
+import os
 from json import JSONDecodeError
 
 import click
@@ -77,7 +78,7 @@ def _get_field_value(raw_value: str) -> any:
 
 def _get_parsed_key_value_pairs(blob: str) -> dict:
     key_value_dict = {}
-    non_empty_lines = [line for line in blob.split("\\n") if line]
+    non_empty_lines = [line for line in blob.split(os.linesep) if line]
     for line in non_empty_lines:
         [key, value] = line.split(":", maxsplit=1)
         key_value_dict.update({
