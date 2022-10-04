@@ -14,6 +14,7 @@ jobs:
           json-file-path: test.json
           field-value-pairs: |
             $.some: things
-            $.items: [1.7, "hello"]
+            $.newProperty: true,
+            $.items: [1.7, "hello", "true"]
       - run: |
           cat ${{ steps.render.outputs.rendered-json-file }}
