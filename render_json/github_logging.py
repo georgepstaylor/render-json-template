@@ -20,28 +20,38 @@ class GitHubLoggingFilter(logging.Filter):
                 self.github_level = "debug"
 
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": True,
-    "filters": {
-        "github_filter": {
-            "()": GitHubLoggingFilter,
+def config(name: str):
+    logging.config.dictConfig(
+        {
+            "version": 1,
+            "disable_existing_loggers": True,
+            "filters": {
+                "github_filter": {
+                    "()": GitHubLoggingFilter,
+                    "name": name,
+                }
+            },
+            "formatters": {
+                "default": {
+                    "format": "::%(github_level)s::%(message)s",
+                },
+            },
+            "handlers": {
+                "stdout": {
+                    "class": "logging.StreamHandler",
+                    "stream": "ext://sys.stdout",
+                    "filters": ["github_filter"],
+                }
+            },
+            "loggers": {
+                "": {
+                    "handlers": None,
+                },
+                "render_json": {
+                    "handlers": ["stdout"],
+                    "level": "DEBUG",
+                    "propagate": True,
+                }
+            }
         }
-    },
-    "formatters": {
-        "default": {
-            "format": "::%(github_level)s::%(message)s",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "level": "DEBUG",
-            "filters": ["github_filter"]
-        }
-    }
-}
-
-
-def config():
-    logging.config.dictConfig(LOGGING)
+    )

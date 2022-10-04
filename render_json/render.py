@@ -1,8 +1,6 @@
 import ast
 import json
 import logging
-import sys
-from distutils.util import strtobool
 from json import JSONDecodeError
 
 import click
@@ -11,7 +9,7 @@ from jsonpath_ng.ext import parse as parse_json_path
 
 from render_json import github_logging
 
-github_logging.config()
+github_logging.config(__name__)
 logger = logging.getLogger(__name__)
 
 
@@ -67,10 +65,11 @@ def _get_field_value(raw_value: str) -> any:
         pass
 
     # Value is boolean or string; check for a boolean
-    try:
-        return bool(strtobool(raw_value))
-    except ValueError:
-        pass
+    match raw_value.lower():
+        case "y" | "yes" | "t" | "true" | "on" | "1":
+            return True
+        case "n" | "no" | "f" | "false" | "off" | "0":
+            return False
 
     # Value must be a string
     return raw_value
@@ -78,24 +77,13 @@ def _get_field_value(raw_value: str) -> any:
 
 def _get_parsed_key_value_pairs(blob: str) -> dict:
     key_value_dict = {}
-    non_empty_lines = [line for line in blob.split("\n") if line]
+    non_empty_lines = [line for line in blob.split("\\n") if line]
     for line in non_empty_lines:
         [key, value] = line.split(":", maxsplit=1)
         key_value_dict.update({
             key.strip(): value.strip()
         })
     return key_value_dict
-
-
-def _configure_logging():
-    root = logging.getLogger()
-    root.setLevel(logging.INFO)
-
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    root.addHandler(handler)
 
 
 if __name__ == "__main__":

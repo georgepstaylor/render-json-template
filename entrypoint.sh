@@ -1,12 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 JSON_FILE_PATH=$1
 FIELD_VALUE_PAIRS=$2
 
-echo "::notice ::Output file ${JSON_FILE_PATH}"
 
-OUTPUT_FILE_PATH="$(echo $RANDOM | md5sum | head -c 10; echo;).${JSON_FILE_PATH}"
+OUTPUT_FILE_PATH="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '').${JSON_FILE_PATH}"
 
+echo "::notice ::Output file ${OUTPUT_FILE_PATH}"
 
 python -m render_json.render \
   --json-file-path "${JSON_FILE_PATH}" \
