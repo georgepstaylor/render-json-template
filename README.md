@@ -5,7 +5,7 @@ This action renders a given JSON template according to the field and values pass
 ## Usage
 
 ```yaml
-- uses: christherama/render-json-template
+- uses: christherama/render-json-template@v1
   with:
     # Path to JSON file serving as the template for rendering an output file. Required.
     json-file-path: path/to/file.json
