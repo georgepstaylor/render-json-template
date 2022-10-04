@@ -1,48 +1,54 @@
-# Render JSON Template
+# Render JSON Template GitHub Action
 
 This action renders a given JSON template according to the field and values passed as inputs.
 
-## Testing
+## Usage
 
-For testing the GitHub Action, we can use [act](https://github.com/nektos/act). After installing, here's what you'll
-need to test locally:
+```yaml
+- uses: christherama/render-json-template
+  with:
+    # Path to JSON file serving as the template for rendering an output file. Required.
+    json-file-path: path/to/file.json
+    
+    # Multi-line string containing key/value pairs of JSON property paths and desired property values
+    field-value-pairs: |
+       $.some.path: "value"
+       $.some.items: [1, 2, 3]
+```
 
-1. Create a workflow in `.github/workflows`, for example `test.yaml`:
-   
-   ```yaml
-   on:
-   push:
-     branches:
-       - main
+## Outputs
 
-   jobs:
-     render-test-json:
-       runs-on: ubuntu-22.04
-       steps:
-         - uses: actions/checkout@v3
-           with:
-             token: ${{ secrets.GITHUB_TOKEN }}
-         - uses: ./
-           with:
-             json-file-path: test.json
-             field-value-pairs: |
-               $.some: things
-               $.items: [8, 9, 10]
-   ```
-2. Create a test file, for example `test.json`:
+### `rendered-json-file`
 
-   ```json
-   {
-     "some": "thing",
-     "items": [1, 2, 3]
-   }
-   ```
+Path to file containing JSON rendered from the base file provided, and injected with the key/value pairs provided.
 
-3. Trigger the workflow with `act`:
+## Example Usage
 
-   ```shell
-   act
-   
-   # Or if you are on an Apple M1
-   act -P ubuntu-22.04=ubuntu:22.04
-   ```
+This example below displays the contents of the rendered file in the action output. It assumes that a file exists at the root of the repository containing this workflow named `test.json`, containing valid JSON.
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  render-test-json:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - id: render
+        uses: christherama/render-json-template
+        with:
+          json-file-path: test.json
+          field-value-pairs: |
+            $.some: "things"
+            $.items: [1.7, "hello"]
+      - run: |
+          cat ${{ steps.render.outputs.rendered-json-file }}
+```
+
+## Reference
+
+- This action is based on https://github.com/h2non/jsonpath-ng
+- Supported JSON path syntax can be found at https://goessner.net/articles/JsonPath/
