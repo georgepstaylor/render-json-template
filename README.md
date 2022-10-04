@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: render
-        uses: christherama/render-json-template
+        uses: christherama/render-json-template@v1
         with:
           json-file-path: test.json
           field-value-pairs: |
