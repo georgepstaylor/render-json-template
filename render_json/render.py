@@ -1,6 +1,7 @@
 import ast
 import json
 import logging
+import sys
 from distutils.util import strtobool
 from json import JSONDecodeError
 
@@ -8,6 +9,9 @@ import click
 from jsonpath_ng.exceptions import JsonPathLexerError, JsonPathParserError
 from jsonpath_ng.ext import parse as parse_json_path
 
+from render_json import github_logging
+
+github_logging.config()
 logger = logging.getLogger(__name__)
 
 
@@ -22,7 +26,8 @@ class JSONPathParserError(Exception):
 @click.command()
 @click.option('--field-value-pairs', required=True)
 @click.option("--json-file-path", required=True, help="Path to base JSON file")
-def render(json_file_path: str, field_value_pairs: str):
+@click.option("--output-file-path", required=True, help="Path where resulting file should be written")
+def render(json_file_path: str, field_value_pairs: str, output_file_path: str):
     try:
         with open(json_file_path) as f:
             rendered_json = json.load(f)
@@ -32,7 +37,8 @@ def render(json_file_path: str, field_value_pairs: str):
         logger.error(f"{ex.__class__.__name__} occurred: {ex}")
         exit(1)
 
-    print(rendered_json)
+    with open(output_file_path, "w+") as f:
+        json.dump(rendered_json, f, indent=2)
 
 
 def inject_value(json_dict: dict, json_path: str, raw_value: any) -> dict:
@@ -79,6 +85,17 @@ def _get_parsed_key_value_pairs(blob: str) -> dict:
             key.strip(): value.strip()
         })
     return key_value_dict
+
+
+def _configure_logging():
+    root = logging.getLogger()
+    root.setLevel(logging.INFO)
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
 
 
 if __name__ == "__main__":
