@@ -1,4 +1,5 @@
 FROM python:3.10.5-alpine
+ENV PYTHONPATH "${PYTHONPATH}:/usr/app"
 WORKDIR /usr/app
 COPY entrypoint.sh entrypoint.sh
 COPY render_json/requirements.txt .
