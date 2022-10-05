@@ -4,7 +4,7 @@ JSON_FILE_PATH=$1
 FIELD_VALUE_PAIRS=$2
 
 
-OUTPUT_FILE_PATH="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '').${JSON_FILE_PATH}"
+OUTPUT_FILE_PATH="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '').json"
 
 python -m render_json.render \
   --json-file-path "${JSON_FILE_PATH}" \
