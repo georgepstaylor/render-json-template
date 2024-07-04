@@ -1,4 +1,4 @@
-FROM python:3.10.5-alpine
+FROM gcr.io/distroless/python3-debian12
 ENV PYTHONPATH "${PYTHONPATH}:/usr/app"
 WORKDIR /usr/app
 COPY entrypoint.sh entrypoint.sh
