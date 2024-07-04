@@ -1,4 +1,4 @@
-FROM python:3.10.5-alpine
+FROM python:3.12.4-alpine
 ENV PYTHONPATH "${PYTHONPATH}:/usr/app"
 WORKDIR /usr/app
 COPY entrypoint.sh entrypoint.sh
