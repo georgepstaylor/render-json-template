@@ -1,4 +1,4 @@
-name: Render JSON template
+name: json-templater
 description: Renders JSON from a base file, injecting field/value pairs into the body
 
 inputs:
