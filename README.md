@@ -5,7 +5,7 @@ This action renders a given JSON template according to the field and values pass
 ## Usage
 
 ```yaml
-- uses: georgepstaylor/render-json-template@v0.0.1
+- uses: georgepstaylor/render-json-template@v0.0.3
   with:
     # Path to JSON file serving as the template for rendering an output file. Required.
     json-file-path: path/to/file.json
@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: render
-        uses: christherama/render-json-template@v1
+        uses: georgepstaylor/render-json-template@v1
         with:
           json-file-path: test.json
           field-value-pairs: |
