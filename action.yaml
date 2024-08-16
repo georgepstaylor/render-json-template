@@ -5,15 +5,15 @@ inputs:
   json-file-path:
     description: Path to JSON file to use as base for rendering
     required: true
+  output-file-name:
+    description: File name for outputting rendered json
+    default: rendered.json
   field-value-pairs:
     description: |
       Multiline path/value pairs for injecting values into the supplied JSON file according to the JSON paths specified.
       Each path/value entry should be separated by a newline, and a colon is used as the separator between a path and
       its corresponding value.
     required: true
-  output-file-name:
-    description: File name for outputting rendered json
-    default: rendered.json
 
 outputs:
   rendered-json-file:
