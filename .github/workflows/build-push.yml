@@ -4,6 +4,10 @@ on:
   push:
     tags:
       - '**'
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: string
 env:
   IMAGE_NAME: render-json-template
 
