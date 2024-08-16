@@ -11,6 +11,9 @@ inputs:
       Each path/value entry should be separated by a newline, and a colon is used as the separator between a path and
       its corresponding value.
     required: true
+  output-file-name:
+    description: File name for outputting rendered json
+    default: rendered.json
 
 outputs:
   rendered-json-file:
@@ -22,3 +25,4 @@ runs:
   args:
     - ${{ inputs.json-file-path }}
     - ${{ inputs.field-value-pairs }}
+    - ${{ inputs.output-file-name }}

@@ -22,6 +22,8 @@ This action renders a given JSON template according to the field and values pass
 
 Path to file containing JSON rendered from the base file provided, and injected with the key/value pairs provided.
 
+Files are outputted to the ${{ github.workspace }} directory at /github/workspace
+
 ## Example Usage
 
 This example below displays the contents of the rendered file in the action output. It assumes that a file exists at the root of the repository containing this workflow named `test.json`, containing valid JSON.

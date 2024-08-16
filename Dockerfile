@@ -1,5 +1,4 @@
 FROM python:3-slim
-USER root
 ENV PYTHONPATH "${PYTHONPATH}:/usr/app"
 WORKDIR /usr/app
 COPY entrypoint.sh entrypoint.sh
