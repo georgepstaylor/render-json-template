@@ -11,4 +11,4 @@ python -m render_json.render \
   --field-value-pairs "${FIELD_VALUE_PAIRS}" \
   --output-file-path "${OUTPUT_FILE_PATH}"
 
-echo "rendered-json-file=\${{ github.workspace }}/${OUTPUT_FILE_NAME}" >> $GITHUB_OUTPUT
+echo "rendered-json-file-name=${OUTPUT_FILE_NAME}" >> $GITHUB_OUTPUT

@@ -16,12 +16,12 @@ inputs:
     required: true
 
 outputs:
-  rendered-json-file:
-    description: JSON file rendered from provided inputs
+  rendered-json-file-name:
+    description: JSON file rendered from provided inputs, prefix the github.workspace path to access the file
 
 runs:
   using: docker
-  image: docker://ghcr.io/georgepstaylor/render-json-template:v0.0.9
+  image: docker://ghcr.io/georgepstaylor/render-json-template:v0.0.10
   args:
     - ${{ inputs.json-file-path }}
     - ${{ inputs.field-value-pairs }}
