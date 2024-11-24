@@ -21,7 +21,7 @@ outputs:
 
 runs:
   using: docker
-  image: docker://ghcr.io/georgepstaylor/render-json-template:v0.0.11
+  image: docker://ghcr.io/georgepstaylor/render-json-template:v0.0.12
   args:
     - ${{ inputs.json-file-path }}
     - ${{ inputs.field-value-pairs }}
