@@ -1,0 +1,14 @@
+[project]
+name = "render-json-template"
+version = "0.0.12"
+description = "Render JSON templates from json path expressions"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["click>=8.1.7", "jsonpath-ng>=1.7.0"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+render = "cli:main_group"
