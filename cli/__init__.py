@@ -8,7 +8,7 @@ import click
 from jsonpath_ng.exceptions import JsonPathLexerError, JsonPathParserError
 from jsonpath_ng.ext import parse as parse_json_path
 
-from render_json import github_logging
+from cli import github_logging
 
 github_logging.config(__name__)
 logger = logging.getLogger(__name__)
@@ -21,12 +21,15 @@ class JSONTemplateRenderError(Exception):
 class JSONPathParserError(Exception):
     """Raised when parsing of a JSON path fails"""
 
+@click.group()
+def main_group():
+    pass
 
 @click.command()
 @click.option('--field-value-pairs', required=True)
 @click.option("--json-file-path", required=True, help="Path to base JSON file")
 @click.option("--output-file-path", required=True, help="Path where resulting file should be written")
-def render(json_file_path: str, field_value_pairs: str, output_file_path: str):
+def template_json(json_file_path: str, field_value_pairs: str, output_file_path: str):
     try:
         with open(json_file_path) as f:
             rendered_json = json.load(f)
@@ -86,6 +89,7 @@ def _get_parsed_key_value_pairs(blob: str) -> dict:
         })
     return key_value_dict
 
+main_group.add_command(template_json)
 
 if __name__ == "__main__":
-    render()
+    main_group()
