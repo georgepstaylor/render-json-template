@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen
 
 
-FROM python:3.13-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 COPY --from=builder /code /code
 
